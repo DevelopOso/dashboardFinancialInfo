@@ -1,4 +1,5 @@
 import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZonelessChangeDetection } from '@angular/core';
+import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
@@ -10,5 +11,6 @@ export const appConfig: ApplicationConfig = {
     provideZonelessChangeDetection(),
     provideRouter(routes),
     provideClientHydration(withEventReplay()),
+    provideCharts(withDefaultRegisterables())
   ]
 };

@@ -1,12 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule, CurrencyPipe } from '@angular/common';
+import { Component, OnInit, inject } from '@angular/core';
+import { CommonModule, CurrencyPipe, isPlatformBrowser } from '@angular/common';
 import { NgClass } from '@angular/common';
-import { Transaction, MockTransactionsService} from '../../core/mock';
+import { Transaction, MockTransactionsService } from '../../core/mock';
+import { BaseChartDirective } from 'ng2-charts';
+import { PLATFORM_ID } from '@angular/core';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, NgClass, CurrencyPipe, NgChartsConfiguration],
+  imports: [CommonModule, NgClass, CurrencyPipe, BaseChartDirective],
   templateUrl: './dashboard.html',
 })
 export class DashboardComponent implements OnInit {
@@ -14,8 +16,12 @@ export class DashboardComponent implements OnInit {
   totalDisponible = 0;
   ingresos = 0;
   egresos = 0;
+  isBrowser = false;
 
-  constructor(private mockService: MockTransactionsService) {}
+  constructor(private mockService: MockTransactionsService) {
+    const platformId = inject(PLATFORM_ID);
+    this.isBrowser = isPlatformBrowser(platformId);
+  }
 
   barChartType = 'bar';
   barChartLabels = ['Ingresos', 'Egresos'];
@@ -24,16 +30,22 @@ export class DashboardComponent implements OnInit {
     datasets: [
       {
         label: 'Montos (COP)',
-        data: [0, 0], // Se actualiza en ngOnInit
-        backgroundColor: ['#16a34a', '#dc2626'], // verde, rojo
+        data: [0, 0],
+        backgroundColor: ['#16a34a', '#dc2626'],
       },
     ]
   };
 
   barChartOptions = {
     responsive: true,
-    maintainAspectRatio: false
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        display: true,
+      },
+    }
   };
+
 
   ngOnInit(): void {
     this.mockService.getTransactions().subscribe((data: Transaction[]) => {
@@ -48,7 +60,4 @@ export class DashboardComponent implements OnInit {
       this.barChartData.datasets[0].data = [this.ingresos, Math.abs(this.egresos)];
     });
   }
-
-
-
 }
