@@ -1,0 +1,51 @@
+<div class="p-6 space-y-6">
+  <h2 class="text-3xl font-bold">Resumen Financiero</h2>
+
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div class="bg-white shadow rounded p-4">
+      <p class="text-gray-500">Total Disponible</p>
+      <p class="text-2xl font-semibold text-green-600">{{ totalDisponible | currency:'COP' }}</p>
+    </div>
+    <div class="bg-white shadow rounded p-4">
+      <p class="text-gray-500">Ingresos</p>
+      <p class="text-xl font-medium text-green-500">{{ ingresos | currency:'COP' }}</p>
+    </div>
+    <div class="bg-white shadow rounded p-4">
+      <p class="text-gray-500">Egresos</p>
+      <p class="text-xl font-medium text-red-500">{{ egresos | currency:'COP' }}</p>
+    </div>
+  </div>
+
+  <div class="bg-white p-4 rounded shadow">
+    <h3 class="text-xl font-semibold mb-4">Gráfico de Ingresos vs Egresos</h3>
+    <canvas baseChart
+            [data]="barChartData"
+            [labels]="barChartLabels"
+            [options]="barChartOptions"
+            [type]="barChartType">
+    </canvas>
+  </div>
+
+
+  <div class="bg-white shadow rounded p-4">
+    <h3 class="text-xl font-bold mb-4">Movimientos recientes</h3>
+    <table class="min-w-full text-sm">
+      <thead>
+      <tr class="text-left border-b">
+        <th class="p-2">Fecha</th>
+        <th class="p-2">Categoría</th>
+        <th class="p-2">Monto</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let t of transactions" class="border-b hover:bg-gray-50">
+        <td class="p-2">{{ t.fecha }}</td>
+        <td class="p-2">{{ t.categoria }}</td>
+        <td class="p-2" [ngClass]="{ 'text-green-600': t.monto > 0, 'text-red-600': t.monto < 0 }">
+          {{ t.monto | currency:'COP' }}
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
