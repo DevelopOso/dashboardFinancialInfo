@@ -156,6 +156,10 @@ export class DashboardComponent implements OnInit {
     setTimeout(() => this.toastMsg = '', 2000);
   }
 
+  trackByFecha(index: number, item: Transaction) {
+    return item.fecha;
+  }
+
   recalcularResumen() {
     this.ingresos = this.transactions.filter(t => t.monto > 0).reduce((acc, t) => acc + t.monto, 0);
     this.egresos = this.transactions.filter(t => t.monto < 0).reduce((acc, t) => acc + t.monto, 0);

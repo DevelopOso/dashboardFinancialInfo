@@ -79,7 +79,7 @@
             <td colspan="4" class="text-center text-gray-500 py-4">No hay movimientos registrados aún.</td>
           </tr>
         } @else {
-          @for (t of transactions; let i = $index; track t.fecha) {
+          @for (t of transactions; let i = $index; track trackByFecha(i, t)) {
             <tr class="border-b hover:bg-gray-50">
               <td class="p-2">
                 @if (editIndex === i) {
